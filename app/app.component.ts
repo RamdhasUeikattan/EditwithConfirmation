@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { gridData1 } from './data';
 import { Grid } from '@syncfusion/ej2-grids';
-import { Dialog } from '@syncfusion/ej2-popups'
+import { Dialog } from '@syncfusion/ej2-popups';
+import { NumericTextBox } from '@syncfusion/ej2-inputs';
 import { ToolbarService, EditService, PageService } from '@syncfusion/ej2-ng-grids';
 
 @Component({
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
     public dialog: Dialog;
     public data: Object[];
     public editSettings: Object;
-    public toolbar: string[];
+    public toolbar: (string| Object)[];
     public orderidrules: Object;
     public customeridrules: Object;
     public freightrules: Object;
@@ -37,16 +38,19 @@ export class AppComponent implements OnInit {
     public ngOnInit(): void {
         this.data = gridData1;
         this.editSettings = { allowEditing: true, allowAdding: true, allowDeleting: true, showDeleteConfirmDialog: true };
-        this.toolbar = ['add', 'edit', 'delete', 'update', 'cancel'];
+        //create custom toolbar component using template 
+        this.toolbar = ['add', 'edit', 'delete', 'update', 'cancel', {template: new NumericTextBox({ format: 'c2', value:1 }), type: 'Input'}];
         this.orderidrules = { required: true };
-        this.customeridrules = { required: true };
-        this.freightrules = { required: true };
+        this.customeridrules = { required: true, minLength: 5 };
+        this.freightrules = { required: true, max: 1000 };
         this.pageSettings = { pageCount: 5 };
         this.editparams = { params: { popupHeight: '300px' }};
     }
     beginEdit(args) {
             this.tr = args.row;
+
             if (!this.dialog){
+                //Custom dialog for edit confirmation
             this.dialog = new Dialog({
                 content: 'Are you want to edit current row?',
                 showCloseIcon: false,
@@ -90,6 +94,7 @@ export class AppComponent implements OnInit {
             args.cancel = true;
         }
     }
+    // Custom confirmation Dialog for edit
     actionComplete(args) {
         switch (args.requestType) {
             case 'save':
