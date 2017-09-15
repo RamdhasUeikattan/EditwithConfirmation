@@ -35,7 +35,6 @@
     "rxjs": "5.0.1",
     "zone.js": "^0.8.4",
     "@syncfusion/ej2-ng-grids": "1.0.17",
-    "@syncfusion/ej2-grids": "1.0.17"
   },
   "devDependencies": {
     "lite-server": "^2.2.2",
